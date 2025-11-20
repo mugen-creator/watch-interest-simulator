@@ -706,10 +706,10 @@
           <label for="downPayment">頭金</label>
           <div class="slider-container">
             <div class="slider-value">
-              <span id="downPaymentPercent">0%</span>
               <span class="slider-value-amount" id="downPaymentAmount">¥0</span>
+              <span id="downPaymentPercent">(0%)</span>
             </div>
-            <input type="range" id="downPayment" min="0" max="80" value="0" step="1">
+            <input type="range" id="downPayment" min="0" max="5000000" value="0" step="100000">
           </div>
         </div>
 
@@ -1156,8 +1156,6 @@
 
     // Down payment slider
     downPaymentSlider.addEventListener('input', function(e) {
-      const percent = e.target.value;
-      downPaymentPercent.textContent = `${percent}%`;
       updateDownPaymentAmount();
       updateBonusAmount();
     });
@@ -1221,15 +1219,27 @@
     // ==================== Update Functions ====================
     function updateDownPaymentAmount() {
       const price = parsePrice(priceInput.value);
-      const percent = parseInt(downPaymentSlider.value);
-      const amount = Math.round(price * percent / 100);
-      downPaymentAmount.textContent = `¥${formatNumber(amount)}`;
+      const amount = parseInt(downPaymentSlider.value);
+
+      // Update slider max based on price (80% max)
+      const maxDownPayment = Math.floor(price * 0.8 / 100000) * 100000;
+      downPaymentSlider.max = maxDownPayment;
+
+      // Adjust current value if it exceeds new max
+      if (amount > maxDownPayment) {
+        downPaymentSlider.value = maxDownPayment;
+      }
+
+      const currentAmount = parseInt(downPaymentSlider.value);
+      const percent = price > 0 ? Math.round(currentAmount / price * 100) : 0;
+
+      downPaymentAmount.textContent = `¥${formatNumber(currentAmount)}`;
+      downPaymentPercent.textContent = `(${percent}%)`;
     }
 
     function updateBonusAmount() {
       const price = parsePrice(priceInput.value);
-      const downPercent = parseInt(downPaymentSlider.value);
-      const downAmount = Math.round(price * downPercent / 100);
+      const downAmount = parseInt(downPaymentSlider.value);
       const loanAmount = price - downAmount;
       const bonusPercent = parseInt(bonusAmountSlider.value);
       const bonusAmount = Math.round(loanAmount * bonusPercent / 100);
@@ -1249,7 +1259,7 @@
 
     function calculateLoans() {
       const price = parsePrice(priceInput.value);
-      const downPercent = parseInt(downPaymentSlider.value);
+      const downAmount = parseInt(downPaymentSlider.value);
       const months = parseInt(monthsSelect.value);
       const useBonusPayment = bonusPaymentCheckbox.checked;
       const bonusPercent = useBonusPayment ? parseInt(bonusAmountSlider.value) : 0;
@@ -1259,7 +1269,6 @@
         return;
       }
 
-      const downAmount = Math.round(price * downPercent / 100);
       const loanAmount = price - downAmount;
 
       currentResults = [];
@@ -1509,14 +1518,14 @@
     // ==================== Share Function ====================
     function shareResults() {
       const price = parsePrice(priceInput.value);
-      const downPercent = parseInt(downPaymentSlider.value);
+      const downAmount = parseInt(downPaymentSlider.value);
       const months = parseInt(monthsSelect.value);
       const useBonusPayment = bonusPaymentCheckbox.checked;
       const bonusPercent = useBonusPayment ? parseInt(bonusAmountSlider.value) : 0;
 
       const params = new URLSearchParams({
         price: price,
-        down: downPercent,
+        downAmount: downAmount,
         months: months,
         bonus: useBonusPayment ? 1 : 0,
         bonusAmount: bonusPercent
@@ -1548,10 +1557,16 @@
         priceInput.value = formatPrice(price);
       }
 
-      if (params.has('down')) {
-        const down = parseInt(params.get('down'));
-        downPaymentSlider.value = down;
-        downPaymentPercent.textContent = `${down}%`;
+      // Support both old (down as percentage) and new (downAmount) format
+      if (params.has('downAmount')) {
+        const downAmount = parseInt(params.get('downAmount'));
+        downPaymentSlider.value = downAmount;
+      } else if (params.has('down')) {
+        // Legacy support for percentage-based down parameter
+        const price = parsePrice(priceInput.value);
+        const downPercent = parseInt(params.get('down'));
+        const downAmount = Math.round(price * downPercent / 100);
+        downPaymentSlider.value = downAmount;
       }
 
       if (params.has('months')) {
