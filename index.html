@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高級腕時計ローンシミュレーター | ROLEX等の分割払い比較</title>
+  <meta name="description" content="ROLEXなど高級腕時計のローンシミュレーション。ウォッチニアン、かめ吉、GMTなど主要10店舗の金利・返済額を一括比較。最適な購入プランが見つかります。">
+  <meta name="keywords" content="ROLEX,ローン,シミュレーター,腕時計,分割払い,ウォッチニアン,かめ吉,GMT">
+
+  <!-- OGP -->
+  <meta property="og:title" content="高級腕時計ローンシミュレーター">
+  <meta property="og:description" content="ROLEXなど高級腕時計の最適なローンプランを比較">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⌚</text></svg>">
+
+  <style>
+    /* ==================== CSS Variables ==================== */
+    :root {
+      /* メインカラー */
+      --primary-color: #1a1a1a;
+      --secondary-color: #c9a050;
+      --accent-color: #2c5f8d;
+
+      /* 背景色 */
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --bg-tertiary: #e9ecef;
+
+      /* テキストカラー */
+      --text-primary: #1a1a1a;
+      --text-secondary: #6c757d;
+      --text-light: #adb5bd;
+
+      /* ボーダー */
+      --border-color: #dee2e6;
+
+      /* ステータスカラー */
+      --success-color: #28a745;
+      --warning-color: #ffc107;
+      --danger-color: #dc3545;
+      --info-color: #17a2b8;
+
+      /* フォントサイズ */
+      --font-size-xs: 0.75rem;
+      --font-size-sm: 0.875rem;
+      --font-size-base: 1rem;
+      --font-size-lg: 1.125rem;
+      --font-size-xl: 1.25rem;
+      --font-size-2xl: 1.5rem;
+      --font-size-3xl: 2rem;
+    }
+
+    /* ==================== Reset & Base ==================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      font-size: var(--font-size-base);
+      color: var(--text-primary);
+      background-color: var(--bg-secondary);
+      line-height: 1.6;
+    }
+
+    /* ==================== Layout ==================== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* ==================== Header ==================== */
+    header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, #2a2a2a 100%);
+      color: white;
+      padding: 32px 0;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    header h1 {
+      font-size: var(--font-size-2xl);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    header p {
+      font-size: var(--font-size-base);
+      opacity: 0.9;
+    }
+
+    /* ==================== Card ==================== */
+    .card {
+      background: var(--bg-primary);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 24px;
+    }
+
+    .card h2 {
+      font-size: var(--font-size-xl);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ==================== Form ==================== */
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      font-size: var(--font-size-base);
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(44, 95, 141, 0.1);
+    }
+
+    .slider-container {
+      margin-top: 12px;
+    }
+
+    .slider-value {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+    }
+
+    .slider-value-amount {
+      font-weight: 600;
+      color: var(--accent-color);
+      font-size: var(--font-size-lg);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: var(--bg-tertiary);
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent-color);
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent-color);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    /* ==================== Accordion ==================== */
+    .accordion {
+      margin-top: 16px;
+    }
+
+    .accordion-header {
+      background: var(--bg-secondary);
+      padding: 12px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .accordion-header:hover {
+      background: var(--bg-tertiary);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .accordion-content.active {
+      max-height: 1000px;
+      padding-top: 16px;
+    }
+
+    /* ==================== Button ==================== */
+    .btn {
+      padding: 12px 32px;
+      border: none;
+      border-radius: 8px;
+      font-size: var(--font-size-base);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2c5f8d 0%, #1a4568 100%);
+      color: white;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(44, 95, 141, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border-color);
+    }
+
+    /* ==================== Results ==================== */
+    #results {
+      display: none;
+    }
+
+    #results.active {
+      display: block;
+    }
+
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .results-count {
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+    }
+
+    .sort-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .sort-btn {
+      padding: 8px 16px;
+      border: 2px solid var(--border-color);
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+      transition: all 0.3s ease;
+    }
+
+    .sort-btn.active {
+      background: var(--accent-color);
+      color: white;
+      border-color: var(--accent-color);
+    }
+
+    .sort-btn:hover {
+      border-color: var(--accent-color);
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .result-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      opacity: 0;
+      animation: fadeInUp 0.5s ease forwards;
+      position: relative;
+    }
+
+    .result-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .result-card.best {
+      border: 2px solid var(--secondary-color);
+    }
+
+    .best-badge {
+      position: absolute;
+      top: -12px;
+      right: 16px;
+      background: linear-gradient(135deg, var(--secondary-color) 0%, #b8933d 100%);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .store-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--bg-secondary);
+    }
+
+    .store-logo {
+      font-size: var(--font-size-2xl);
+    }
+
+    .store-info h3 {
+      font-size: var(--font-size-lg);
+      margin-bottom: 4px;
+    }
+
+    .plan-name {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+    }
+
+    .payment-info {
+      margin-bottom: 20px;
+    }
+
+    .payment-label {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .payment-amount {
+      font-size: var(--font-size-2xl);
+      font-weight: 700;
+      color: var(--accent-color);
+      margin-bottom: 8px;
+    }
+
+    .bonus-payment {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+    }
+
+    .total-info {
+      background: var(--bg-secondary);
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .total-amount {
+      font-size: var(--font-size-xl);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .breakdown {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+      margin-left: 8px;
+    }
+
+    .details-list {
+      list-style: none;
+      margin-bottom: 16px;
+    }
+
+    .details-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--bg-secondary);
+      font-size: var(--font-size-sm);
+    }
+
+    .details-list li:last-child {
+      border-bottom: none;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-detail {
+      flex: 1;
+      padding: 10px;
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+      transition: all 0.3s ease;
+    }
+
+    .btn-detail:hover {
+      background: #1a4568;
+    }
+
+    .btn-compare {
+      padding: 10px 16px;
+      background: white;
+      border: 2px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+      transition: all 0.3s ease;
+    }
+
+    .btn-compare:hover {
+      border-color: var(--accent-color);
+      color: var(--accent-color);
+    }
+
+    .btn-compare.selected {
+      background: var(--success-color);
+      color: white;
+      border-color: var(--success-color);
+    }
+
+    /* ==================== Modal ==================== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-header {
+      padding: 24px;
+      border-bottom: 2px solid var(--bg-secondary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 1;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: var(--font-size-2xl);
+      cursor: pointer;
+      color: var(--text-secondary);
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .modal-close:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .repayment-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: var(--font-size-sm);
+    }
+
+    .repayment-table th {
+      background: var(--bg-secondary);
+      padding: 12px 8px;
+      text-align: right;
+      font-weight: 600;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .repayment-table th:first-child,
+    .repayment-table td:first-child {
+      text-align: center;
+    }
+
+    .repayment-table td {
+      padding: 10px 8px;
+      text-align: right;
+      border-bottom: 1px solid var(--bg-secondary);
+    }
+
+    .repayment-table tr.bonus-row {
+      background: #fff9e6;
+    }
+
+    /* ==================== Notice ==================== */
+    .notice {
+      background: #fff3cd;
+      border-left: 4px solid var(--warning-color);
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 32px;
+      font-size: var(--font-size-sm);
+    }
+
+    .notice h3 {
+      font-size: var(--font-size-base);
+      margin-bottom: 8px;
+    }
+
+    .notice ul {
+      margin-left: 20px;
+      margin-top: 8px;
+    }
+
+    .notice li {
+      margin-bottom: 4px;
+    }
+
+    /* ==================== Footer ==================== */
+    footer {
+      text-align: center;
+      padding: 32px 0;
+      color: var(--text-secondary);
+      font-size: var(--font-size-sm);
+      margin-top: 48px;
+    }
+
+    /* ==================== Animations ==================== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ==================== Responsive ==================== */
+    @media (max-width: 767px) {
+      header h1 {
+        font-size: var(--font-size-xl);
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .results-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .sort-buttons {
+        width: 100%;
+      }
+
+      .sort-btn {
+        flex: 1;
+      }
+
+      .repayment-table {
+        font-size: var(--font-size-xs);
+      }
+
+      .repayment-table th,
+      .repayment-table td {
+        padding: 8px 4px;
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .results-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* ==================== Utility ==================== */
+    .hidden {
+      display: none;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mt-16 {
+      margin-top: 16px;
+    }
+
+    .mb-16 {
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <h1><span>⌚</span> 高級腕時計ローンシミュレーター</h1>
+      <p>あなたに最適なローンプランを見つけよう</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Input Form -->
+    <section class="card">
+      <h2>💰 購入条件を入力</h2>
+
+      <form id="simulatorForm">
+        <!-- 商品価格 -->
+        <div class="form-group">
+          <label for="price">商品価格</label>
+          <input type="text" id="price" placeholder="例: 1,500,000" required>
+        </div>
+
+        <!-- 頭金 -->
+        <div class="form-group">
+          <label for="downPayment">頭金</label>
+          <div class="slider-container">
+            <div class="slider-value">
+              <span id="downPaymentPercent">0%</span>
+              <span class="slider-value-amount" id="downPaymentAmount">¥0</span>
+            </div>
+            <input type="range" id="downPayment" min="0" max="80" value="0" step="1">
+          </div>
+        </div>
+
+        <!-- 返済回数 -->
+        <div class="form-group">
+          <label for="months">返済回数</label>
+          <select id="months" required>
+            <option value="3">3回</option>
+            <option value="6">6回</option>
+            <option value="10">10回</option>
+            <option value="12">12回</option>
+            <option value="18">18回</option>
+            <option value="24">24回</option>
+            <option value="36" selected>36回</option>
+            <option value="48">48回</option>
+            <option value="60">60回</option>
+          </select>
+        </div>
+
+        <!-- 詳細設定 -->
+        <div class="accordion">
+          <div class="accordion-header" id="advancedToggle">
+            <span>▼ 詳細設定</span>
+            <span id="advancedIcon">▼</span>
+          </div>
+          <div class="accordion-content" id="advancedContent">
+            <!-- ボーナス払い -->
+            <div class="checkbox-group">
+              <input type="checkbox" id="bonusPayment">
+              <label for="bonusPayment">ボーナス払い併用</label>
+            </div>
+
+            <div id="bonusSettings" class="hidden">
+              <div class="form-group">
+                <label for="bonusAmount">ボーナス加算額（融資額の割合）</label>
+                <div class="slider-container">
+                  <div class="slider-value">
+                    <span id="bonusPercent">0%</span>
+                    <span class="slider-value-amount" id="bonusAmountDisplay">¥0</span>
+                  </div>
+                  <input type="range" id="bonusAmount" min="0" max="50" value="0" step="5">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 送信ボタン -->
+        <button type="submit" class="btn btn-primary mt-16">
+          🔍 シミュレーション実行
+        </button>
+      </form>
+    </section>
+
+    <!-- Results -->
+    <section id="results">
+      <div class="card">
+        <div class="results-header">
+          <div>
+            <h2>📊 シミュレーション結果</h2>
+            <p class="results-count" id="resultsCount">10件のプランが見つかりました</p>
+          </div>
+          <div class="sort-buttons">
+            <button class="sort-btn active" data-sort="total">総支払額順</button>
+            <button class="sort-btn" data-sort="monthly">月額順</button>
+            <button class="sort-btn" data-sort="rate">金利順</button>
+          </div>
+        </div>
+
+        <div class="results-grid" id="resultsGrid">
+          <!-- Results will be inserted here -->
+        </div>
+      </div>
+
+      <!-- 共有ボタン -->
+      <div class="text-center mt-16">
+        <button class="btn btn-secondary" id="shareBtn">🔗 結果を共有</button>
+      </div>
+    </section>
+
+    <!-- Notice -->
+    <div class="notice">
+      <h3>⚠️ ご利用上の注意</h3>
+      <ul>
+        <li>このシミュレーターは概算値を示すものです。</li>
+        <li>実際の融資条件は審査により異なる場合があります。</li>
+        <li>金利・手数料は変更される可能性があります。</li>
+        <li>正確な情報は各販売店に直接お問い合わせください。</li>
+        <li>当サイトは情報提供を目的としており、特定の販売店や商品を推奨するものではありません。</li>
+      </ul>
+
+      <h3 class="mt-16">💡 計算方法</h3>
+      <p>元利均等返済方式を採用しています。毎月一定額（元金+利息）を返済する方法です。</p>
+    </div>
+  </main>
+
+  <!-- Detail Modal -->
+  <div class="modal" id="detailModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">返済シミュレーション詳細</h2>
+        <button class="modal-close" id="modalClose">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Modal content will be inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 高級腕時計ローンシミュレーター</p>
+    </div>
+  </footer>
+
+  <script>
+    // ==================== Store Data ====================
+    const watchStores = [
+      {
+        id: "watchnian",
+        name: "ウォッチニアン",
+        displayName: "ウォッチニアン",
+        logo: "🕐",
+        loanPlans: [
+          {
+            planName: "通常ショッピングローン",
+            minAmount: 100000,
+            maxAmount: 10000000,
+            interestRate: 9.8,
+            minMonths: 3,
+            maxMonths: 60,
+            availableMonths: [3, 6, 10, 12, 18, 24, 36, 48, 60],
+            processingFee: 0,
+            processingFeeType: "fixed",
+            features: [
+              "Web完結で来店不要",
+              "最短即日審査",
+              "頭金0円から可能"
+            ]
+          }
+        ],
+        url: "https://www.watchnian.com/",
+        note: "中古時計専門店。豊富な在庫と柔軟な審査が特徴。",
+        recommendPoint: "審査が柔軟で通りやすい"
+      },
+      {
+        id: "kamekichi",
+        name: "かめ吉",
+        displayName: "かめ吉",
+        logo: "🐢",
+        loanPlans: [
+          {
+            planName: "オリコショッピングローン",
+            minAmount: 100000,
+            maxAmount: 5000000,
+            interestRate: 12.0,
+            minMonths: 3,
+            maxMonths: 60,
+            availableMonths: [3, 6, 10, 12, 18, 24, 36, 48, 60],
+            processingFee: 0,
+            processingFeeType: "fixed",
+            features: [
+              "最大60回払い",
+              "ボーナス併用払い可",
+              "Webで簡単申込"
+            ]
+          }
+        ],
+        url: "https://www.kamekichi.co.jp/",
+        note: "老舗の時計専門店。信頼性の高い鑑定。",
+        recommendPoint: "老舗の安心感"
+      },
+      {
+        id: "gmt",
+        name: "GMT",
+        displayName: "GMT",
+        logo: "⌚",
+        loanPlans: [
+          {
+            planName: "ジャックスショッピングローン",
+            minAmount: 100000,
+            maxAmount: 10000000,
+            interestRate: 8.5,
+            minMonths: 6,
+            maxMonths: 60,
+            availableMonths: [6, 10, 12, 18, 24, 36, 48, 60],
+            processingFee: 0,
+            processingFeeType: "fixed",
+            features: [
+              "低金利",
+              "高額商品に対応",
+              "審査最短30分"
+            ]
+          }
+        ],
+        url: "https://www.gmt-j.com/",
+        note: "ROLEXを中心に高級時計を取り扱う。",
+        recommendPoint: "低金利が魅力"
+      },
+      {
+        id: "jackroad",
+        name: "ジャックロード",
+        displayName: "ジャックロード",
+        logo: "👑",
+        loanPlans: [
+          {
+            planName: "標準ローンプラン",
+            minAmount: 100000,
+            maxAmount: 10000000,
+            interestRate: 10.5,
+            minMonths: 3,
+            maxMonths: 60,
+            availableMonths: [3, 6, 10, 12, 18, 24, 36, 48, 60],
+            processingFee: 0,
+            processingFeeType: "fixed",
+            features: [
+              "豊富な在庫",
+              "全国配送対応",
+              "アフターサービス充実"
+            ]
+          }
+        ],
+        url: "https://www.jackroad.co.jp/",
+        note: "中野に実店舗を持つ大手時計店。",
+        recommendPoint: "在庫豊富で選択肢が多い"
+      },
+      {
+        id: "closer",
+        name: "CLOSER",
+        displayName: "CLOSER",
+        logo: "💎",
+        loanPlans: [
+          {
+            planName: "CLOSERローン",
+            minAmount: 100000,
+            maxAmount: 5000000,
+            interestRate: 11.5,
+            minMonths: 3,
+            maxMonths: 48,
+            availableMonths: [3, 6, 10, 12, 18, 24, 36, 48],
+            processingFee: 0,
+            processingFeeType: "fixed",
+            features: [
+              "女性向けモデル充実",
+              "丁寧な接客",
+              "買取も強化"
+            ]
+          }
+        ],
+        url: "https://closer.jp/",
+        note: "ブランド品全般を扱う。時計の品揃えも豊富。",
+        recommendPoint: "女性向けモデルが豊富"
+      },
+      {
+        id: "ginza-rasin",
+        name: "GINZA RASIN",
+        displayName: "GINZA RASIN",
+        logo: "✨",
+        loanPlans: [
+          {
+            planName: "RASINショッピングローン",
+            minAmount: 100000,
+            maxAmount: 10000000,
+            interestRate: 7.9,
+            minMonths: 6,
+            maxMonths: 60,
+            availableMonths: [6, 10, 12, 18, 24, 36, 48, 60],
+            processingFee: 0,
+            processingFeeType: "fixed",
+            features: [
+              "業界最低水準の金利",
+              "銀座に実店舗",
+              "高級時計専門"
+            ]
+          }
+        ],
+        url: "https://www.rasin.co.jp/",
+        note: "銀座の高級時計専門店。プレミアムな接客。",
+        recommendPoint: "最低水準の低金利"
+      },
+      {
+        id: "daikokuya",
+        name: "大黒屋",
+        displayName: "大黒屋",
+        logo: "🏪",
+        loanPlans: [
+          {
+            planName: "大黒屋ローン",
+            minAmount: 50000,
+            maxAmount: 3000000,
+            interestRate: 14.5,
+            minMonths: 3,
+            maxMonths: 36,
+            availableMonths: [3, 6, 10, 12, 18, 24, 36],
+            processingFee: 0,
+            processingFeeType: "fixed",
+            features: [
+              "全国に店舗展開",
+              "少額から対応",
+              "審査スピーディ"
+            ]
+          }
+        ],
+        url: "https://www.e-daikoku.com/",
+        note: "全国チェーン。買取・販売・質預かりを展開。",
+        recommendPoint: "全国に店舗があり便利"
+      },
+      {
+        id: "komehyo",
+        name: "KOMEHYO",
+        displayName: "KOMEHYO",
+        logo: "🌾",
+        loanPlans: [
+          {
+            planName: "KOMEHYOクレジット",
+            minAmount: 100000,
+            maxAmount: 5000000,
+            interestRate: 13.0,
+            minMonths: 3,
+            maxMonths: 48,
+            availableMonths: [3, 6, 10, 12, 18, 24, 36, 48],
+            processingFee: 0,
+            processingFeeType: "fixed",
+            features: [
+              "東海地区最大手",
+              "鑑定力に定評",
+              "オンラインストア充実"
+            ]
+          }
+        ],
+        url: "https://komehyo.jp/",
+        note: "名古屋発祥の老舗。時計以外のブランド品も充実。",
+        recommendPoint: "信頼の鑑定力"
+      },
+      {
+        id: "bettyroad",
+        name: "ベティーロード",
+        displayName: "ベティーロード",
+        logo: "👗",
+        loanPlans: [
+          {
+            planName: "ベティーローン",
+            minAmount: 100000,
+            maxAmount: 3000000,
+            interestRate: 12.8,
+            minMonths: 3,
+            maxMonths: 48,
+            availableMonths: [3, 6, 10, 12, 18, 24, 36, 48],
+            processingFee: 0,
+            processingFeeType: "fixed",
+            features: [
+              "女性向け商品充実",
+              "おしゃれな店舗",
+              "丁寧な説明"
+            ]
+          }
+        ],
+        url: "https://www.bettyroad.co.jp/",
+        note: "女性に人気のブランドリユース店。",
+        recommendPoint: "女性スタッフ多数で相談しやすい"
+      },
+      {
+        id: "tokyo-shichipo",
+        name: "東京質舗",
+        displayName: "東京質舗",
+        logo: "🏛️",
+        loanPlans: [
+          {
+            planName: "質ローン",
+            minAmount: 100000,
+            maxAmount: 5000000,
+            interestRate: 15.0,
+            minMonths: 3,
+            maxMonths: 24,
+            availableMonths: [3, 6, 10, 12, 18, 24],
+            processingFee: 3000,
+            processingFeeType: "fixed",
+            features: [
+              "質預かりも可能",
+              "審査なし(質の場合)",
+              "即日現金化"
+            ]
+          }
+        ],
+        url: "https://www.shichipo.jp/",
+        note: "質屋としても営業。質預かりという選択肢も。",
+        recommendPoint: "質預かりで審査不要"
+      }
+    ];
+
+    // ==================== Global Variables ====================
+    let currentResults = [];
+    let currentSort = 'total';
+
+    // ==================== DOM Elements ====================
+    const priceInput = document.getElementById('price');
+    const downPaymentSlider = document.getElementById('downPayment');
+    const downPaymentPercent = document.getElementById('downPaymentPercent');
+    const downPaymentAmount = document.getElementById('downPaymentAmount');
+    const monthsSelect = document.getElementById('months');
+    const bonusPaymentCheckbox = document.getElementById('bonusPayment');
+    const bonusSettings = document.getElementById('bonusSettings');
+    const bonusAmountSlider = document.getElementById('bonusAmount');
+    const bonusPercent = document.getElementById('bonusPercent');
+    const bonusAmountDisplay = document.getElementById('bonusAmountDisplay');
+    const advancedToggle = document.getElementById('advancedToggle');
+    const advancedContent = document.getElementById('advancedContent');
+    const advancedIcon = document.getElementById('advancedIcon');
+    const simulatorForm = document.getElementById('simulatorForm');
+    const resultsSection = document.getElementById('results');
+    const resultsGrid = document.getElementById('resultsGrid');
+    const resultsCount = document.getElementById('resultsCount');
+    const sortButtons = document.querySelectorAll('.sort-btn');
+    const detailModal = document.getElementById('detailModal');
+    const modalClose = document.getElementById('modalClose');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const shareBtn = document.getElementById('shareBtn');
+
+    // ==================== Utility Functions ====================
+    function formatNumber(num) {
+      return Math.round(num).toLocaleString('ja-JP');
+    }
+
+    function parsePrice(str) {
+      return parseInt(str.replace(/,/g, ''), 10) || 0;
+    }
+
+    function formatPrice(num) {
+      return num.toLocaleString('ja-JP');
+    }
+
+    // ==================== Event Listeners ====================
+    // Price input formatting
+    priceInput.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/,/g, '');
+      if (/^\d*$/.test(value)) {
+        e.target.value = value ? formatPrice(parseInt(value)) : '';
+        updateDownPaymentAmount();
+        updateBonusAmount();
+      }
+    });
+
+    // Down payment slider
+    downPaymentSlider.addEventListener('input', function(e) {
+      const percent = e.target.value;
+      downPaymentPercent.textContent = `${percent}%`;
+      updateDownPaymentAmount();
+      updateBonusAmount();
+    });
+
+    // Bonus payment checkbox
+    bonusPaymentCheckbox.addEventListener('change', function(e) {
+      if (e.target.checked) {
+        bonusSettings.classList.remove('hidden');
+      } else {
+        bonusSettings.classList.add('hidden');
+      }
+    });
+
+    // Bonus amount slider
+    bonusAmountSlider.addEventListener('input', function(e) {
+      const percent = e.target.value;
+      bonusPercent.textContent = `${percent}%`;
+      updateBonusAmount();
+    });
+
+    // Advanced settings accordion
+    advancedToggle.addEventListener('click', function() {
+      advancedContent.classList.toggle('active');
+      advancedIcon.textContent = advancedContent.classList.contains('active') ? '▲' : '▼';
+    });
+
+    // Form submission
+    simulatorForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      calculateLoans();
+    });
+
+    // Sort buttons
+    sortButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        sortButtons.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentSort = this.dataset.sort;
+        sortAndDisplayResults();
+      });
+    });
+
+    // Modal close
+    modalClose.addEventListener('click', closeModal);
+    detailModal.addEventListener('click', function(e) {
+      if (e.target === detailModal) {
+        closeModal();
+      }
+    });
+
+    // ESC key to close modal
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && detailModal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+
+    // Share button
+    shareBtn.addEventListener('click', shareResults);
+
+    // ==================== Update Functions ====================
+    function updateDownPaymentAmount() {
+      const price = parsePrice(priceInput.value);
+      const percent = parseInt(downPaymentSlider.value);
+      const amount = Math.round(price * percent / 100);
+      downPaymentAmount.textContent = `¥${formatNumber(amount)}`;
+    }
+
+    function updateBonusAmount() {
+      const price = parsePrice(priceInput.value);
+      const downPercent = parseInt(downPaymentSlider.value);
+      const downAmount = Math.round(price * downPercent / 100);
+      const loanAmount = price - downAmount;
+      const bonusPercent = parseInt(bonusAmountSlider.value);
+      const bonusAmount = Math.round(loanAmount * bonusPercent / 100);
+      bonusAmountDisplay.textContent = `¥${formatNumber(bonusAmount)}`;
+    }
+
+    // ==================== Loan Calculation ====================
+    function calculateMonthlyPayment(principal, annualRate, months) {
+      if (annualRate === 0) {
+        return principal / months;
+      }
+      const monthlyRate = annualRate / 12 / 100;
+      const payment = principal * (monthlyRate * Math.pow(1 + monthlyRate, months)) /
+                     (Math.pow(1 + monthlyRate, months) - 1);
+      return payment;
+    }
+
+    function calculateLoans() {
+      const price = parsePrice(priceInput.value);
+      const downPercent = parseInt(downPaymentSlider.value);
+      const months = parseInt(monthsSelect.value);
+      const useBonusPayment = bonusPaymentCheckbox.checked;
+      const bonusPercent = useBonusPayment ? parseInt(bonusAmountSlider.value) : 0;
+
+      if (!price || price < 10000) {
+        alert('商品価格を正しく入力してください。');
+        return;
+      }
+
+      const downAmount = Math.round(price * downPercent / 100);
+      const loanAmount = price - downAmount;
+
+      currentResults = [];
+
+      watchStores.forEach(store => {
+        store.loanPlans.forEach(plan => {
+          // Check if loan amount is within range
+          if (loanAmount < plan.minAmount || loanAmount > plan.maxAmount) {
+            return;
+          }
+
+          // Check if months is available
+          if (!plan.availableMonths.includes(months)) {
+            return;
+          }
+
+          // Calculate bonus payment
+          let bonusAmount = 0;
+          let bonusCount = 0;
+          let regularMonths = months;
+
+          if (useBonusPayment && bonusPercent > 0) {
+            bonusAmount = Math.round(loanAmount * bonusPercent / 100);
+            bonusCount = Math.floor(months / 6); // Bonus every 6 months
+            if (bonusCount === 0) bonusCount = 0;
+          }
+
+          // Calculate monthly payment (without bonus portion)
+          const regularLoanAmount = loanAmount - (bonusAmount * bonusCount);
+          const monthlyPayment = calculateMonthlyPayment(regularLoanAmount, plan.interestRate, months);
+
+          // Calculate total payment
+          const totalPaymentFromMonthly = monthlyPayment * months;
+          const totalPaymentWithBonus = totalPaymentFromMonthly + (bonusAmount * bonusCount);
+          const totalPayment = totalPaymentWithBonus + plan.processingFee + downAmount;
+
+          // Calculate total interest
+          const totalInterest = totalPayment - price;
+
+          currentResults.push({
+            store: store,
+            plan: plan,
+            price: price,
+            downAmount: downAmount,
+            loanAmount: loanAmount,
+            months: months,
+            monthlyPayment: monthlyPayment,
+            bonusPayment: bonusAmount,
+            bonusCount: bonusCount,
+            totalPayment: totalPayment,
+            totalInterest: totalInterest,
+            processingFee: plan.processingFee
+          });
+        });
+      });
+
+      if (currentResults.length === 0) {
+        alert('条件に合うローンプランが見つかりませんでした。条件を変更してお試しください。');
+        return;
+      }
+
+      sortAndDisplayResults();
+      resultsSection.classList.add('active');
+      resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function sortAndDisplayResults() {
+      // Sort results
+      currentResults.sort((a, b) => {
+        switch(currentSort) {
+          case 'total':
+            return a.totalPayment - b.totalPayment;
+          case 'monthly':
+            return a.monthlyPayment - b.monthlyPayment;
+          case 'rate':
+            return a.plan.interestRate - b.plan.interestRate;
+          default:
+            return 0;
+        }
+      });
+
+      displayResults();
+    }
+
+    function displayResults() {
+      resultsCount.textContent = `${currentResults.length}件のプランが見つかりました`;
+      resultsGrid.innerHTML = '';
+
+      currentResults.forEach((result, index) => {
+        const card = createResultCard(result, index === 0);
+        resultsGrid.appendChild(card);
+
+        // Animate card appearance
+        setTimeout(() => {
+          card.style.animationDelay = `${index * 0.1}s`;
+        }, 10);
+      });
+    }
+
+    function createResultCard(result, isBest) {
+      const card = document.createElement('div');
+      card.className = `result-card ${isBest ? 'best' : ''}`;
+
+      const bonusPaymentText = result.bonusCount > 0
+        ? `<div class="bonus-payment">ボーナス月: ¥${formatNumber(result.monthlyPayment + result.bonusPayment)}</div>`
+        : '';
+
+      card.innerHTML = `
+        ${isBest ? '<div class="best-badge">🏆 おすすめ</div>' : ''}
+        <div class="store-header">
+          <div class="store-logo">${result.store.logo}</div>
+          <div class="store-info">
+            <h3>${result.store.displayName}</h3>
+            <div class="plan-name">${result.plan.planName}</div>
+          </div>
+        </div>
+
+        <div class="payment-info">
+          <div class="payment-label">💵 月々の返済額</div>
+          <div class="payment-amount">¥${formatNumber(result.monthlyPayment)}</div>
+          ${bonusPaymentText}
+        </div>
+
+        <div class="total-info">
+          <div class="total-amount">📈 返済総額: ¥${formatNumber(result.totalPayment)}</div>
+          <div class="breakdown">└ 利息: ¥${formatNumber(result.totalInterest)}</div>
+          ${result.processingFee > 0 ? `<div class="breakdown">└ 手数料: ¥${formatNumber(result.processingFee)}</div>` : ''}
+        </div>
+
+        <ul class="details-list">
+          <li>・実質年率: ${result.plan.interestRate}%</li>
+          <li>・返済回数: ${result.months}回</li>
+          <li>・融資額: ¥${formatNumber(result.loanAmount)}</li>
+        </ul>
+
+        <div class="card-actions">
+          <button class="btn-detail" onclick="showDetail(${currentResults.indexOf(result)})">
+            詳細を見る
+          </button>
+        </div>
+      `;
+
+      return card;
+    }
+
+    // ==================== Detail Modal ====================
+    window.showDetail = function(index) {
+      const result = currentResults[index];
+
+      modalTitle.textContent = `${result.store.displayName} - ${result.plan.planName}`;
+
+      // Generate repayment schedule
+      const schedule = generateRepaymentSchedule(result);
+
+      let scheduleHTML = `
+        <div style="margin-bottom: 24px;">
+          <h3>店舗情報</h3>
+          <p><strong>おすすめポイント:</strong> ${result.store.recommendPoint}</p>
+          <p>${result.store.note}</p>
+          <p><a href="${result.store.url}" target="_blank" rel="noopener">公式サイトを見る →</a></p>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <h3>プランの特徴</h3>
+          <ul>
+            ${result.plan.features.map(f => `<li>${f}</li>`).join('')}
+          </ul>
+        </div>
+
+        <div>
+          <h3>返済シミュレーション表</h3>
+          <div style="overflow-x: auto;">
+            <table class="repayment-table">
+              <thead>
+                <tr>
+                  <th>回数</th>
+                  <th>返済額</th>
+                  <th>元金</th>
+                  <th>利息</th>
+                  <th>残高</th>
+                </tr>
+              </thead>
+              <tbody>
+      `;
+
+      schedule.forEach((row, i) => {
+        const isBonus = row.isBonus;
+        scheduleHTML += `
+          <tr class="${isBonus ? 'bonus-row' : ''}">
+            <td>${row.month}${isBonus ? '🎁' : ''}</td>
+            <td>¥${formatNumber(row.payment)}</td>
+            <td>¥${formatNumber(row.principal)}</td>
+            <td>¥${formatNumber(row.interest)}</td>
+            <td>¥${formatNumber(row.balance)}</td>
+          </tr>
+        `;
+      });
+
+      scheduleHTML += `
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+
+      modalBody.innerHTML = scheduleHTML;
+      detailModal.classList.add('active');
+    };
+
+    function generateRepaymentSchedule(result) {
+      const schedule = [];
+      let balance = result.loanAmount;
+      const monthlyRate = result.plan.interestRate / 12 / 100;
+
+      // Determine bonus months
+      const bonusMonths = [];
+      if (result.bonusCount > 0) {
+        for (let i = 6; i <= result.months; i += 6) {
+          bonusMonths.push(i);
+        }
+      }
+
+      for (let month = 1; month <= result.months; month++) {
+        const interest = balance * monthlyRate;
+        const isBonus = bonusMonths.includes(month);
+        const payment = result.monthlyPayment + (isBonus ? result.bonusPayment : 0);
+        const principal = payment - interest;
+        balance -= principal;
+
+        schedule.push({
+          month: month,
+          payment: payment,
+          principal: principal,
+          interest: interest,
+          balance: Math.max(0, balance),
+          isBonus: isBonus
+        });
+      }
+
+      return schedule;
+    }
+
+    function closeModal() {
+      detailModal.classList.remove('active');
+    }
+
+    // ==================== Share Function ====================
+    function shareResults() {
+      const price = parsePrice(priceInput.value);
+      const downPercent = parseInt(downPaymentSlider.value);
+      const months = parseInt(monthsSelect.value);
+      const useBonusPayment = bonusPaymentCheckbox.checked;
+      const bonusPercent = useBonusPayment ? parseInt(bonusAmountSlider.value) : 0;
+
+      const params = new URLSearchParams({
+        price: price,
+        down: downPercent,
+        months: months,
+        bonus: useBonusPayment ? 1 : 0,
+        bonusAmount: bonusPercent
+      });
+
+      const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+
+      // Copy to clipboard
+      navigator.clipboard.writeText(url).then(() => {
+        alert('URLをクリップボードにコピーしました！\n\n' + url);
+      }).catch(() => {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = url;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('URLをクリップボードにコピーしました！\n\n' + url);
+      });
+    }
+
+    // ==================== Load from URL ====================
+    function loadFromURL() {
+      const params = new URLSearchParams(window.location.search);
+
+      if (params.has('price')) {
+        const price = parseInt(params.get('price'));
+        priceInput.value = formatPrice(price);
+      }
+
+      if (params.has('down')) {
+        const down = parseInt(params.get('down'));
+        downPaymentSlider.value = down;
+        downPaymentPercent.textContent = `${down}%`;
+      }
+
+      if (params.has('months')) {
+        monthsSelect.value = params.get('months');
+      }
+
+      if (params.has('bonus') && params.get('bonus') === '1') {
+        bonusPaymentCheckbox.checked = true;
+        bonusSettings.classList.remove('hidden');
+      }
+
+      if (params.has('bonusAmount')) {
+        const bonusAmount = parseInt(params.get('bonusAmount'));
+        bonusAmountSlider.value = bonusAmount;
+        bonusPercent.textContent = `${bonusAmount}%`;
+      }
+
+      updateDownPaymentAmount();
+      updateBonusAmount();
+
+      // Auto-calculate if price is set
+      if (params.has('price')) {
+        setTimeout(() => {
+          calculateLoans();
+        }, 500);
+      }
+    }
+
+    // ==================== Initialize ====================
+    updateDownPaymentAmount();
+    updateBonusAmount();
+    loadFromURL();
+  </script>
+</body>
+</html>
