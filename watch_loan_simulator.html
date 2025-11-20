@@ -1420,25 +1420,34 @@
             return;
           }
 
-          // Calculate bonus payment
+          // ボーナス払いの計算
           let bonusAmount = 0;
           let bonusCount = 0;
-          let regularMonths = months;
+          let monthlyPayment;
+          let totalPayment;
 
-          if (useBonusPayment && bonusPercent > 0) {
-            bonusAmount = Math.round(loanAmount * bonusPercent / 100);
-            bonusCount = Math.floor(months / 6); // Bonus every 6 months
-            if (bonusCount === 0) bonusCount = 0;
+          if (useBonusPayment && bonusPercent > 0 && months >= 6) {
+            bonusCount = Math.floor(months / 6); // 6ヶ月ごとにボーナス月
+
+            // ボーナス払い分の元金を計算
+            const bonusPrincipal = Math.round(loanAmount * bonusPercent / 100);
+            // 月払い分の元金を計算
+            const monthlyPrincipal = loanAmount - bonusPrincipal;
+
+            // 月払い分を元利均等で計算
+            monthlyPayment = calculateMonthlyPayment(monthlyPrincipal, plan.interestRate, months);
+
+            // ボーナス払い分を元利均等で計算してから、ボーナス回数で割る
+            const bonusTotalPayment = calculateMonthlyPayment(bonusPrincipal, plan.interestRate, months) * months;
+            bonusAmount = Math.round(bonusTotalPayment / bonusCount);
+
+            // 総返済額 = 月払い分 + ボーナス払い分 + 手数料 + 頭金
+            totalPayment = (monthlyPayment * months) + (bonusAmount * bonusCount) + plan.processingFee + downAmount;
+          } else {
+            // ボーナス払いなし：通常の元利均等計算
+            monthlyPayment = calculateMonthlyPayment(loanAmount, plan.interestRate, months);
+            totalPayment = (monthlyPayment * months) + plan.processingFee + downAmount;
           }
-
-          // Calculate monthly payment (without bonus portion)
-          const regularLoanAmount = loanAmount - (bonusAmount * bonusCount);
-          const monthlyPayment = calculateMonthlyPayment(regularLoanAmount, plan.interestRate, months);
-
-          // Calculate total payment
-          const totalPaymentFromMonthly = monthlyPayment * months;
-          const totalPaymentWithBonus = totalPaymentFromMonthly + (bonusAmount * bonusCount);
-          const totalPayment = totalPaymentWithBonus + plan.processingFee + downAmount;
 
           // Calculate total interest
           const totalInterest = totalPayment - price;
@@ -1615,7 +1624,6 @@
 
     function generateRepaymentSchedule(result) {
       const schedule = [];
-      let balance = result.loanAmount;
       const monthlyRate = result.plan.interestRate / 12 / 100;
 
       // Determine bonus months
@@ -1626,21 +1634,59 @@
         }
       }
 
-      for (let month = 1; month <= result.months; month++) {
-        const interest = balance * monthlyRate;
-        const isBonus = bonusMonths.includes(month);
-        const payment = result.monthlyPayment + (isBonus ? result.bonusPayment : 0);
-        const principal = payment - interest;
-        balance -= principal;
+      // ボーナス払いの場合は月払い分とボーナス払い分を分けて計算
+      if (result.bonusCount > 0) {
+        const bonusPrincipalTotal = Math.round(result.loanAmount * (result.bonusPayment * result.bonusCount) /
+                                     (result.monthlyPayment * result.months + result.bonusPayment * result.bonusCount));
+        const monthlyPrincipalTotal = result.loanAmount - bonusPrincipalTotal;
 
-        schedule.push({
-          month: month,
-          payment: payment,
-          principal: principal,
-          interest: interest,
-          balance: Math.max(0, balance),
-          isBonus: isBonus
-        });
+        let monthlyBalance = monthlyPrincipalTotal;
+        let bonusBalance = bonusPrincipalTotal;
+
+        for (let month = 1; month <= result.months; month++) {
+          const isBonus = bonusMonths.includes(month);
+
+          // 月払い分の計算
+          const monthlyInterest = monthlyBalance * monthlyRate;
+          const monthlyPrincipal = result.monthlyPayment - monthlyInterest;
+          monthlyBalance = Math.max(0, monthlyBalance - monthlyPrincipal);
+
+          // ボーナス分の計算
+          let bonusPrincipal = 0;
+          let bonusInterest = 0;
+          if (isBonus) {
+            bonusInterest = bonusBalance * monthlyRate * 6; // 6ヶ月分の利息
+            bonusPrincipal = result.bonusPayment - bonusInterest;
+            bonusBalance = Math.max(0, bonusBalance - bonusPrincipal);
+          }
+
+          schedule.push({
+            month: month,
+            payment: result.monthlyPayment + (isBonus ? result.bonusPayment : 0),
+            principal: monthlyPrincipal + bonusPrincipal,
+            interest: monthlyInterest + bonusInterest,
+            balance: monthlyBalance + bonusBalance,
+            isBonus: isBonus
+          });
+        }
+      } else {
+        // ボーナス払いなしの通常計算
+        let balance = result.loanAmount;
+
+        for (let month = 1; month <= result.months; month++) {
+          const interest = balance * monthlyRate;
+          const principal = result.monthlyPayment - interest;
+          balance = Math.max(0, balance - principal);
+
+          schedule.push({
+            month: month,
+            payment: result.monthlyPayment,
+            principal: principal,
+            interest: interest,
+            balance: balance,
+            isBonus: false
+          });
+        }
       }
 
       return schedule;
